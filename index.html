@@ -10,37 +10,13 @@
     h1 { color: #ff3399; }
     h2 { font-size: 28px; margin: 20px 0; }
     p { font-size: 20px; margin-top: 10px; }
-    #allEntries { text-align: left; margin-top: 30px; }
-    #entryList li { margin: 5px 0; }
   </style>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBjMnVAk8h1C3_YgVKwwO1VqucBvwDMyKg",
-      authDomain: "lovecounterlog-e6517.firebaseapp.com",
-      projectId: "lovecounterlog-e6517",
-      storageBucket: "lovecounterlog-e6517.firebasestorage.app",
-      messagingSenderId: "535148914918",
-      appId: "1:535148914918:web:3df7c3ec705773e3787327",
-      measurementId: "G-XVX1S1XEWF"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-  </script>
 </head>
 <body>
   <div class="container">
     <h1>💖 Love Result 💖</h1>
     <h2 id="namesDisplay">Loading...</h2>
     <p id="percentDisplay"></p>
-
-    <div id="allEntries">
-      <h3>All Love Logs 💖</h3>
-      <ul id="entryList"></ul>
-    </div>
   </div>
 
   <script>
@@ -51,19 +27,6 @@
     const percent = params.get("percent");
     if(nameA && nameB){ document.getElementById("namesDisplay").innerText = `${nameA} ❤️ ${nameB}`; }
     if(percent){ document.getElementById("percentDisplay").innerText = `Love Percentage: ${percent}%`; }
-
-    // Load last 50 entries from Firestore
-    const list = document.getElementById("entryList");
-    db.collection("loveLog").orderBy("timestamp","desc").limit(50)
-      .onSnapshot((snapshot)=>{
-        list.innerHTML = "";
-        snapshot.forEach(doc=>{
-          const data = doc.data();
-          const li = document.createElement("li");
-          li.textContent = `${data.nameA} ❤️ ${data.nameB} → ${data.percent}%`;
-          list.appendChild(li);
-        });
-      });
   </script>
 </body>
 </html>
